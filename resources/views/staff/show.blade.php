@@ -23,7 +23,7 @@
                 @include('staff.widgets.assign-class')
             </div>
         </div>
-        @if($staff->isAuth() && Auth::user()->profile->id != $staff->id)
+        @if($staff->isAuth() && (Auth::user()->profile->id != $staff->id || Auth::user()->isSuperAdmin()))
             <form action="{{ route('staff.reauthorize', [$staff->id]) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -32,7 +32,7 @@
         @endif
         <div class="m-2">
 
-        @if($staff->isAuth()  && Auth::user()->profile->id != $staff->id)
+        @if($staff->isAuth() && (Auth::user()->profile->id != $staff->id || Auth::user()->isSuperAdmin()))
             @if($staff->user->hasAccess())
                 <form action="{{ route('staff.access.revoke', [$staff->id]) }}" method="POST">
                     @csrf

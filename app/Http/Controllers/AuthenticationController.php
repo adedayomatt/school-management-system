@@ -72,9 +72,13 @@ class AuthenticationController extends Controller
     //  return redirect()->back()->with('warning','Staff authorization is not enabled yet');
     
     $staff = Staff::findorfail($id);
+    if($staff->isAsstTeacher()){
+      return redirect()->back()->with('warning','Authorization for assistant teachers is enabled');
+    }
     if(User::where('email',$staff->email)->get()->count() > 0){
         return redirect()->back()->with('error', 'Could not authorize '.$staff->fullname().'. Email '.$staff->email.' is already authorized for a user');
     }
+    
     if(!$this->isAuthorizable($staff->email)){
      return redirect()->back()->with('error','Could not authorize '.$staff->fullname().'. Email could be invalid');
     }

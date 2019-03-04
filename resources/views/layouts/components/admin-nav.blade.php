@@ -78,13 +78,12 @@
 
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('role.create') }}"><i class="fa fa-plus-square"></i> New staff role</a></li>
             @if($_roles::all()->count() > 0)
               @foreach($_roles::all() as $role)
                 <li><a href="{{ route('role.show',[$role->slug]) }}"><i class="fa fa-user-tag"></i> {{$role->name}}</a></li>
               @endforeach
             @endif
-            <li><a href="{{ route('role.index') }}"><i class="fa fa-user-tag"></i> All staff role</a></li>
+            <!-- <li><a href="{{ route('role.index') }}"><i class="fa fa-user-tag"></i> All staff role</a></li> -->
 
           </ul>
 

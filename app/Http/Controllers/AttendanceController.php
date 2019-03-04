@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class AttendanceController extends Controller
 {
     public function __construct(){
-       $this->middleware('teacher');
+       $this->middleware(['nofeature','teacher']);
     }
 
     public function markStudentAttendance(Request $request,$classroom_id){

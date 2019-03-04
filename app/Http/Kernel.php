@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'teacher' => \App\Http\Middleware\RedirectIfNotTeacher::class,
         'maintainance' => \App\Http\Middleware\MaintainanceOn::class,
         'access' => \App\Http\Middleware\AccessDenied::class,
+        'nofeature' => \App\Http\Middleware\FeatureNotAvailable::class
     ];
 }
