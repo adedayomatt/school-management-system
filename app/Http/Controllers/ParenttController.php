@@ -21,7 +21,7 @@ class ParenttController extends Controller
     public function index()
     {
         $parents = Parentt::orderby('created_at','desc')->paginate(20);
-        return view('parent.index')->with('parents',$parents);
+        return view('parent.index')->with(['parents'=>$parents,'total'=>Parentt::all()->count()]);
     }
 
     /**
