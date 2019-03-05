@@ -25,8 +25,8 @@
                         <th>Name</th>
                         <th>Date of Birth</th>
                         <th>Gender</th>
-                        <th>Guardian/Parent</th>
-                        <th>Seeking admission into</th>
+                        <!-- <th>Guardian/Parent</th> -->
+                        <!-- <th>Seeking admission into</th> -->
                         <th></th>
                     </tr>
                 </thead>
@@ -38,7 +38,7 @@
                             <td>{{$enrollment->fullname()}}</td>
                             <td>{{$enrollment->dob()}}</td>
                             <td>{{$enrollment->gender}}</td>
-                            <td>
+                            <!-- <td>
                                 @if($enrollment->parents->count() > 0)
                                 <ul class="list-group">
                                     @foreach($enrollment->parents as $parent)
@@ -48,8 +48,8 @@
                                 @else
                                     <small class="text-center text-danger">No parent/guardian found</small>
                                 @endif
-                            </td>
-                            <td>{{$enrollment->seeking_admission_into}}</td>
+                            </td> -->
+                            <!-- <td>{{$enrollment->seeking_admission_into}}</td> -->
                             <td>
                                 <small>Trashed {{$enrollment->deleted_at()}}</small>
                             </td>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Session;
+use App\Student;
+use App\Parentt;
 use App\Enrollment;
 use Illuminate\Http\Request;
 
@@ -186,16 +188,24 @@ class EnrollmentController extends Controller
     public function destroy($id)
     {
          $enrollment = Enrollment::findorfail($id);
+
          if($enrollment->isApproved()){
             $enrollment->student->delete();
             }
+
+        if($enrollment->parents->count() > 0){
+            foreach($enrollment->parents as $p){
+                $p->delete();
+            }
+        }
+
          $enrollment->delete();
          return redirect()->route('enrollment.index')->with('success',$enrollment->fullname().' enrollment has been deleted');
     }
 
     
 	public function bin(){
-		$enrollments = Enrollment::onlyTrashed()->get();
+		$enrollments = Enrollment::onlyTrashed()->orderBy('deleted_at','desc')->get();
 		return view('student.enrollment.bin')->with('enrollments', $enrollments);
     }
     public function batchAction(Request $request)
@@ -215,10 +225,19 @@ class EnrollmentController extends Controller
 
 	public function restore($id){
         $enrollment=Enrollment::withTrashed()->where('id', $id)->firstorfail();
-        if($enrollment->isApproved()){
-            $enrollment->student->restore();
-        }
         $enrollment->restore();
+
+        $student = Student::withTrashed()->where('enrollment_id',$enrollment->id)->first();
+        if($student != null){
+            $student->restore();
+        }
+
+        $parents = Parentt::withTrashed()->where('enrollment_id',$enrollment->id)->get();
+        if($parents->count() > 0){
+            foreach($parents as $p){
+                $p->restore();
+            }
+        }
     }
 
     public function singleRestore($id)
@@ -241,10 +260,21 @@ class EnrollmentController extends Controller
 
 	public function kill($id){
         $enrollment=Enrollment::withTrashed()->where('id', $id)->firstorfail();
-        if($enrollment->isApproved()){
-            $enrollment->student->forceDelete();
+        
+        $student = Student::withTrashed()->where('enrollment_id',$enrollment->id)->first();
+        if($student != null){
+            $student->forceDelete();
         }
-		$enrollment->forceDelete();
+
+        $parents = Parentt::withTrashed()->where('enrollment_id',$enrollment->id)->get();
+        if($parents->count() > 0){
+            foreach($parents as $p){
+                $p->forceDelete();
+            }
+        }
+
+        $enrollment->forceDelete();
+
     }
 
     public function singleKill($id){

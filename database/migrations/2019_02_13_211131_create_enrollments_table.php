@@ -30,7 +30,7 @@ class CreateEnrollmentsTable extends Migration
             $table->string('emergency_contact')->nullable();
             $table->string('emergency_phone')->nullable();
             $table->string('ailment')->nullable();
-            $table->integer('siblings')->default(0);
+            $table->integer('siblings')->nullable();
             $table->string('seeking_admission_into')->nullable();
             $table->integer('admitted_into')->nullable();
             $table->string('parents_email')->nullable();

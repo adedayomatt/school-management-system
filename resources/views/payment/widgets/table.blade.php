@@ -12,7 +12,7 @@
     <tbody>
         @if($payments->count()> 0)
             @foreach($payments->sortBy('created_at') as $payment)
-                @if($payment->fee != null)
+                @if($payment->fee != null && $payment->student != null)
                     <tr>
                         <td><a href="{{route('student.show',[$payment->student->id])}}">{{ $payment->student->fullname() }}</a></td>
                         <td><a href="{{route('fee.show',[$payment->fee->id])}}">{{ $payment->fee->name }}</a></td>

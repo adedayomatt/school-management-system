@@ -18,6 +18,7 @@ class AdminSeeder extends Seeder
             'phone' => '08139004572',
             'email' => 'adedayomatt@gmail.com'
           ]);
+          
 
     }
 }
