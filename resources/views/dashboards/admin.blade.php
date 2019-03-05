@@ -3,18 +3,22 @@
     @include('student.enrollment.widgets.search')
 </div>
 
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                @include('staff.widgets.search')
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    @include('staff.widgets.search')
+                </div>
             </div>
-            <div class="col-md-6">
-                @include('payment.widgets.verify')
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    @include('payment.widgets.verify')
+                </div>
             </div>
         </div>
     </div>
-</div>
 
    <div class="row">
         <div class="col-md-3">

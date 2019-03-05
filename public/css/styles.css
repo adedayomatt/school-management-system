@@ -1,5 +1,4 @@
 .fixed-operations-pane{
-    position: fixed;
     top: 50px;
     right: 20px;
     padding: 10px;
@@ -17,4 +16,12 @@
 .tt-menu{
     max-height: 400px;
     overflow-y: auto;
+}
+.card-body{
+    overflow-x: auto;
+}
+@media (min-width: 768px){
+    .fixed-operations-pane{
+        position: fixed;
+    }
 }

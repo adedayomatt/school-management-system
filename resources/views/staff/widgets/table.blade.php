@@ -14,11 +14,10 @@
                     <td><a href="{{ route('staff.show', [$staff->id]) }}">{{ $staff->fullname() }}</a></td>
                     <td>{{ $staff->role === null ? 'No role' : $staff->role->name }}</td>
                     <td>
-                        @if($staff->classroom !== null)
-                           
+                        @if($staff->hasClass())
                             <a href="{{route('class.show',[$staff->classroom->slug])}}">{{$staff->classroom->name}}</a>
                         @else
-                            @include('staff.widgets.assign-class')
+                            <small class="text-warning">no class assigned yet</small>
                         @endif
                     </td>
                     <td>{{ $staff->phone }}</td>
