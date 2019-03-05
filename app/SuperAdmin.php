@@ -16,4 +16,12 @@ class SuperAdmin extends Model
     public function fullname(){
         return $this->name;
     }
+    
+    public function isLevel1(){
+        return $this->level == 1 ? true : false;
+    }
+
+    public function isLevel2(){
+        return $this->level == 2 ? true : false;
+    }
 }
