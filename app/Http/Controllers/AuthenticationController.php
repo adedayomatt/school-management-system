@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class AuthenticationController extends Controller
 {
   public function __construct(){
-    $this->middleware('admin')->except([
+    $this->middleware('superadmin2')->except([
       'maintainance',
       'deniedAccess',
       'editPassword',

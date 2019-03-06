@@ -3,8 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
-class MaintainanceOn
+use Illuminate\Support\Facades\Auth;
+
+class RedirectIfNotSuperAdmin1
 {
     /**
      * Handle an incoming request.
@@ -15,15 +16,10 @@ class MaintainanceOn
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::check()){
-            if(!Auth::user()->isSuperAdmin()){
-             return redirect()->route('maintainance');
-            }
-        }else{
-             return redirect()->route('maintainance');
+        if(!Auth::user()->isSuperAdmin() || (Auth::user()->isSuperAdmin() && !Auth::user()->profile->isLevel1()) ){
+            return redirect()->back()->with('warning','You are not authorized for that!');
         }
-       
-        
+
         return $next($request);
     }
 }

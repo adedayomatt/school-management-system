@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfNotAdmin
+class RedirectIfNotSuperAdmin2
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,10 @@ class RedirectIfNotAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(!Auth::user()->isAdmin()){
-            return redirect()->back()->with('warning','You are not authorized for that!, contact any of the administrators to perform that action. <a href="'.route('role.show',[1]).'">click here to see the admins</a>');
+        if(!Auth::user()->isSuperAdmin() || (Auth::user()->isSuperAdmin() && !Auth::user()->profile->level > 2)){
+            return redirect()->back()->with('warning','You are not authorized for that!, contact the Propritress to perform that action');
         }
+
         return $next($request);
     }
 }

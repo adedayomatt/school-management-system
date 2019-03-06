@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class RoleController extends Controller
 {
     public function __construct(){
-        $this->middleware(['nofeature','admin']);
+        $this->middleware('admin');
+        $this->middleware('nofeature')->except(['index','show']);
      }
 
      public function getRole($id){

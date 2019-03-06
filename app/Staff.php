@@ -86,7 +86,7 @@ class Staff extends Model
 	}
 	
 	public function class(){
-		return $this->classroom_id !== null && $this->classroom_id > 0 ? '<a href="'.route('class.show',[$this->classroom->id]).'">'.$this->classroom->name.'</a>': '<small class="text-danger">not assigned a class yet</small>';
+		return $this->classroom_id !== null && $this->classroom_id > 0 ? '<a href="'.route('class.show',[$this->classroom->id]).'">'.$this->classroom->name.'</a>': '<small class="text-warning">no class assigned</small>';
 	}
 
 	public function role_(){

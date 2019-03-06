@@ -15,7 +15,7 @@ class FeatureNotAvailable
      */
     public function handle($request, Closure $next)
     {
-        return redirect()->back()->with('warning','This feature is not available yet');
+        return redirect()->back()->with('warning','This feature is not currently unavailable');
         return $next($request);
     }
 }

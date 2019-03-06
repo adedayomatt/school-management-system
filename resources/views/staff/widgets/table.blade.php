@@ -17,7 +17,7 @@
                         @if($staff->hasClass())
                             <a href="{{route('class.show',[$staff->classroom->slug])}}">{{$staff->classroom->name}}</a>
                         @else
-                            <small class="text-warning">no class assigned yet</small>
+                            <small class="text-warning">no class assigned</small>
                         @endif
                     </td>
                     <td>{{ $staff->phone }}</td>
