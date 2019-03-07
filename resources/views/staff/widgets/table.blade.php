@@ -21,7 +21,12 @@
                         @endif
                     </td>
                     <td>{{ $staff->phone }}</td>
-                    <td>{{ $staff->email }}</td>
+                    <td>{{ $staff->email }}
+                    @if($staff->isAuth())
+                        <small class="text-success"><i class="fa fa-check-circle"></i> authorized</small>
+                    @endif
+
+                    </td>
                 </tr>
             @endforeach
         @else

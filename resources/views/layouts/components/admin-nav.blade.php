@@ -11,7 +11,7 @@
                 <span>Pending enrollments <span class="badge badge-info">{{$_pending_enrollments->count()}}</span></span>
                 </a> 
               </li>  
-              <li><a href="{{ route('enrollment.bin') }}"><i class="fa fa-trash"></i> Bin</a></li>
+              <li><a href="{{ route('enrollment.bin') }}" class="text-danger"><i class="fa fa-trash"></i> Trash</a></li>
   
           </ul>
         </li>

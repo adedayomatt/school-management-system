@@ -1,5 +1,5 @@
 
-<div class="fixed-operations-pane">
+<div class="fixed-operations-pane" style="overflow: unset">
     @include('student.enrollment.widgets.search')
 </div>
 

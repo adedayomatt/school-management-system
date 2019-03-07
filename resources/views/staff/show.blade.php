@@ -71,7 +71,12 @@
         <div class="card-body">
             <div class="my-2">
                 <span class="mx-5"><i class="fa fa-phone"></i> Phone: {{$staff->phone}}</span>
-                <span class="mx-5"><i class="fa fa-envelope"></i> Email: {{$staff->email}}</span>
+                <span class="mx-5"><i class="fa fa-envelope"></i> 
+                Email: {{$staff->email}} 
+                @if($staff->isAuth())
+                        <small class="text-success"><i class="fa fa-check-circle"></i> authorized</small>
+                    @endif
+                </span>
             </div>
         <ul class="list-group">
             <li class="list-group-item">Gender: <strong>{{$staff->gender}}</strong></li>

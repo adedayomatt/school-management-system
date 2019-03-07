@@ -51,7 +51,7 @@ public function changeClass(Request $request){
    */
     public function index()
     {
-        return view('class.index')->with('classes',Classroom::orderby('created_at','desc')->get());
+        return view('class.index')->with('classes',Classroom::orderby('id','asc')->get());
     }
 
     /**

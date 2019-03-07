@@ -47,9 +47,6 @@ class StudentsImport implements ToCollection,WithHeadingRow
                         'fullname' => $row['father_fullname'],
                         'relation' => 'father',
                         'phone' => $row['father_phone'],
-                        // 'home_address' => $this->checkForString($row['father_home_address']),
-                        // 'occupation' => $this->checkForString($row['father_occupation']),
-                        // 'business_address' => $this->checkForString($row['father_business_address']),
                     ]);
                    
 
@@ -61,9 +58,6 @@ class StudentsImport implements ToCollection,WithHeadingRow
                         'fullname' => $row['mother_fullname'],
                         'relation' => 'mother',
                         'phone' => $row['mother_phone'],
-                        // 'home_address' => $this->checkForString($row['mother_home_address']),
-                        // 'occupation' => $this->checkForString($row['mother_occupation']),
-                        // 'business_address' => $this->checkForString($row['mother_business_address']),
                     ]);
                      
                 }
@@ -76,6 +70,48 @@ class StudentsImport implements ToCollection,WithHeadingRow
                    
                 }
 
+            }else{
+                $enrollment = Enrollment::where('surname',$row['surname'])->where('other_names',$row['other_names'])->first();
+                $enrollment->dob = $this->toPHPdate($row['dob']);
+                $enrollment->gender = $row['gender'];
+                $enrollment->home_address = $row['home_address'];
+                $enrollment->nationality = $row['nationality'];
+                $enrollment->state = $row['state_of_origin'];
+                $enrollment->lga = $row['lga'];
+                $enrollment->town = $row['town'];
+                $enrollment->village = $row['village'];
+                $enrollment->admitted_into = $this->isFilled($row['admitted_into']) && $row['admitted_into'] > 0 ? $row['admitted_into'] : null;
+                $enrollment->src = 'import';
+                $enrollment->save();
+
+                if($enrollment->parents->count() > 0){
+                    foreach($enrollment->parents as $parent){
+                        if($parent->relation == 'mother'){
+                            $parent->fullname = $row['mother_fullname'];
+                            $parent->phone = $row['mother_phone'];
+                            $parent->save();
+                        }
+                        else if($parent->relation == 'father'){
+                            $parent->fullname = $row['father_fullname'];
+                            $parent->phone = $row['father_phone'];
+                            $parent->save();
+                        }
+                    }
+                }else{
+                    $father = Parentt::create([
+                        'enrollment_id' => $enrollment->id,
+                        'fullname' => $row['father_fullname'],
+                        'relation' => 'father',
+                        'phone' => $row['father_phone'],
+                    ]);
+
+                    $mother = Parentt::create([
+                        'enrollment_id' => $enrollment->id,
+                        'fullname' => $row['mother_fullname'],
+                        'relation' => 'mother',
+                        'phone' => $row['mother_phone'],
+                    ]);
+                }
             }
         }
     }
@@ -84,6 +120,7 @@ class StudentsImport implements ToCollection,WithHeadingRow
     {
         return 1;
     }
+
     private function toPHPdate($excel_date){
         // https://stackoverflow.com/questions/11119631/excel-date-conversion-using-php-excel
         if(is_numeric($excel_date)){
