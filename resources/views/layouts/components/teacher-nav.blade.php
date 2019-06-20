@@ -1,4 +1,4 @@
-<?php
+            <?php
             $myClass = Auth::user()->profile->classroom;
             ?>
 

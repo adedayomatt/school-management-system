@@ -63,7 +63,7 @@
             <span class="mx-5"><i class="fa fa-user-tie"></i> Role: {!!$staff->role_()!!}</span>
             <span class="mx-5"> <i class="fa fa-chair"></i> Class: {!!$staff->class()!!}</span>
             @if($staff->isAuth() && !$staff->user->hasAccess())
-                <div class="alert alert-warning">
+                <div class="alert alert-warning m-2">
                    <i class="fa fa-exclamation-triangle"></i> Access is currently revoked
                 </div>
             @endif

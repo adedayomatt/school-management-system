@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Grade;
+use App\Setting;
+
 use Illuminate\Http\Request;
 
 class PortalController extends Controller
@@ -18,12 +20,10 @@ class PortalController extends Controller
   public function updateSettings(Request $request){
    $this->validate($request,[
      'academic_session' => ['required'],
-     'term' => ['required']
    ]);
    
    $settings = Setting::findorfail(1);
-   $settings->session = $request->academic_session;
-   $settings->term = $request->term;
+   $settings->term_id = $request->academic_session;
    $settings->save();
 
    return redirect()->route('dashboard')->with('success','Settings saved');

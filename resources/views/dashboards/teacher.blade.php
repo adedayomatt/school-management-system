@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-body text-center">
-        <h2>How is it going today <strong>{{Auth::user()->profile->fullname()}}</strong> ???</h2>
+        <h2>How is it going today {{Auth::user()->profile->fullname()}}</h2>
     </div>
 </div>
 @if(Auth::user()->profile->hasClass())
