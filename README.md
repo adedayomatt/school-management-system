@@ -2,32 +2,16 @@
 School Management System with laravel 5.6
 The project is incomplete, however is usable to modify it.
 
-```
-composer update
-```
+## School Management System
 
-Copy paste the env file and setup your mysql database
+This is an application that can be used to manage school
 
-```
-php artisan key:generate
-php artisan migrate
-php artisan db:seed
-php artisan db:seed --class=UsersTableSeeder
-php artisan db:seed --class=AdminsTableSeeder
+## What it can do
 
-```
-
-setup your vhost files.
-
-You can go to the admin dashboard by /admin on the domain, use the email and password from database.
-
-#### Features 
-
-- Employee Management ( Payroll management and calculation)
-- Library Management (Book managing with returning dates)
-- Student Information Management
-- Achievements/Events/Embedded Google Calendar management
-- Pdf generating
-- Reminder Emails
-- Execel and CSV importing for tables
-- Barcode attendance system
+- Manage students' and parents' records
+- Manage Staff and guarantors' records
+- Manage classes and subjects
+- Manage students' atendance
+- Manage Fees and payments (including payment receipt printing)
+- Record and print student results
+- Real-time student and staff record search 
