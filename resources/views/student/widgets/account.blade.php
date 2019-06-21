@@ -1,13 +1,11 @@
 @if($student->allFees()->count() > 0)
     @foreach($student->allFees() as $fee)
-        <?php $payments = $fee->payments()->where('student_id',$student->id)->get() ?>
-        @include('fee.widget')
+        @include('fee.widget',['payments' => $fee->payments()->where('student_id',$student->id)->get()])
         @if(!$fee->isForGeneral() && !$fee->isForClasses())
             <div class="text-right">
-                <form action="{{route('student.fee.cancel',[$student->id])}}" method="POST">
+                <form action="{{route('student.fee.cancel',[$student->id,$fee->id])}}" method="POST">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="fee" value="{{$fee->id}}">
                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i> cancel {{$fee->name}} fee for {{$student->enrollment->surname}}</button>
                 </form>
             </div>

@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth','access']], function(){
     Route::get('student/{student}','StudentController@show')->name('student.show');
     Route::get('student/{student}/enrollment','StudentController@enrollment')->name('student.enrollment');
     Route::put('student/{student}/fee/add','StudentController@addFee')->name('student.fee.add');
-    Route::put('student/{student}/fee/cancel','StudentController@cancelFee')->name('student.fee.cancel');
+    Route::put('student/{student}/fee/{fee}/cancel','FeeController@cancelStudentFee')->name('student.fee.cancel');
     Route::get('student/{student}/fee/{fee}/pay','StudentController@payFee')->name('student.fee.pay');
     Route::get('students/results','ResultController@studentResults')->name('student.results');
     Route::post('result/print','PrinterController@result')->name('result.print');
@@ -73,7 +73,7 @@ Route::group(['middleware' => ['auth','access']], function(){
     
     Route::resource('class','ClassroomController');
     Route::put('class/{class}/fee/add','ClassroomController@addFee')->name('class.fee.add');
-    Route::put('class/{class}/fee/cancel','ClassroomController@cancelFee')->name('class.fee.cancel');
+    Route::put('class/{class}/fee/{fee}/cancel','FeeController@cancelClassFee')->name('class.fee.cancel');
     Route::put('class/{class}/subject/update', 'ClassroomController@updateSubjects')->name('class.subject.update');
     Route::put('promotion','ClassroomController@changeClass')->name('class.change');
     Route::put('class/{class}/attendance','AttendanceController@markStudentAttendance')->name('class.attendance');
@@ -95,11 +95,15 @@ Route::group(['middleware' => ['auth','access']], function(){
     Route::resource('fee','FeeController');
     Route::get('fee/{fee}/payments','FeeController@payments')->name('fee.payments');
     Route::get('fee/{fee}/pay','FeeController@pay')->name('fee.pay');
+    Route::post('fee/{fee}/attachclasses','FeeController@attachClasses')->name('fee.attach.classes');
+    Route::post('fee/{fee}/attachstudents','FeeController@attachStudents')->name('fee.attach.students');
+    
     Route::get('payment/create','PaymentController@create')->name('payment.create');
     Route::post('payment/create','PaymentController@store')->name('payment.store');
     Route::get('payments','PaymentController@index')->name('payments');
     Route::get('payment/{payment}/receipt','PrinterController@receipt')->name('payment.receipt');
     Route::get('payment/verify','PaymentController@verify')->name('payment.verify');
+    Route::delete('payment/{payment}/destroy','PaymentController@destroy')->name('payment.destroy');
   
     Route::resource('term','TermController');
 
@@ -113,4 +117,9 @@ Route::group(['middleware' => ['auth','access']], function(){
     Route::put('settings/portal','PortalController@updateSettings')->name('portal.settings.update');    
     Route::get('settings/grading', 'PortalController@editGrading')->name('grade.settings.edit');
     Route::put('settings/grading', 'PortalController@updateGrading')->name('grade.settings.update');
+
+    Route::get('backups', 'BackupController@index')->name('backups');
+    Route::get('backup/create', 'BackupController@create')->name('backup.create');
+    Route::get('backup/download/{file_name}', 'BackupController@download')->name('backup.download');
+    Route::get('backup/delete/{file_name}', 'BackupController@delete')->name('backup.delete');
 });

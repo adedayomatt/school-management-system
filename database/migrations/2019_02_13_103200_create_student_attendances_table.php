@@ -16,8 +16,8 @@ class CreateStudentAttendancesTable extends Migration
         Schema::create('student_attendances', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('term_id');
-            $table->integer('student_id');
-            $table->integer('classroom_id');
+            $table->integer('student_id')->unsigned();
+            $table->integer('classroom_id')->unsigned();
             $table->integer('present')->default(0);
             $table->string('comment')->nullable();
             $table->timestamps();

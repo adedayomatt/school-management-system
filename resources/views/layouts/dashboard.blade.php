@@ -46,8 +46,13 @@
   color: red;
   font-weight: bolder;
 }
+.operations-container{
+    opacity: .1
+}
+.operations-wrapper:hover .operations-container{
+    opacity: 1;
+}
 </style>
-
 </head>
 <body class="hold-transition skin-purple sidebar-mini fixed">
 <!-- Site wrapper -->
@@ -255,6 +260,14 @@
             <span>Change password</span>
           </a>
         </li>
+
+        <li>
+          <a href="{{route('backups')}}">
+            <i class="fas fa-database"></i>
+            <span>Backups</span>
+          </a>
+        </li>
+
 
 
 
@@ -475,11 +488,30 @@
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset('dist/js/demo.js')}}"></script>
+    <script src="{{asset('js/vendors/jquery.jscroll.min.js')}}"></script>
+
     <script>
       $(document).ready(function () {
         $('.sidebar-menu').tree()
         $('.select2').select2();
       })
+
+      $('.infinite-scroll').each(function(){
+        var container = $(this);
+        container.find('ul.pagination').hide();
+        container.jscroll({
+                autoTrigger: true,
+                // loadingHtml: '<img class="center-block" src="/images/loading.gif" alt="Loading..." />',
+                loadingHtml: '<div class="text-muted text-center"><small>loading more...</small></div>',
+                padding: 0,
+                nextSelector: '.pagination li.active + li a',
+                contentSelector: 'div.infinite-scroll',
+                callback: function() {
+                    container.find('ul.pagination').remove();
+                }
+            });
+      });
+
     </script>
     @include('layouts.components.typeahead.student')
     @include('layouts.components.typeahead.staff')

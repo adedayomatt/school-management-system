@@ -40,6 +40,14 @@ class Classroom extends Model
             array_push($subjects, $s->id);
         }
         return $subjects;
+	}
+	public function studentsArray(){
+        $students = array();
+        foreach($this->students as $s)
+        {
+            array_push($students, $s->id);
+        }
+        return $students;
     }
 
 	public function isOffering($subject_id)

@@ -14,12 +14,18 @@ class AddForeignKeyToStudentAttendancesTable extends Migration
     public function up()
     {
         Schema::table('student_attendances', function (Blueprint $table) {
-            $table->unsignedInteger('student_id', 10)->change();
             $table->index('student_id');
             $table->foreign('student_id')
                     ->references('id')
                     ->on('students')
                     ->onDelete('cascade');
+
+            $table->index('classroom_id');
+                    $table->foreign('classroom_id')
+                            ->references('id')
+                            ->on('classrooms')
+                            ->onDelete('cascade');
+        
         });
     }
 
@@ -31,8 +37,12 @@ class AddForeignKeyToStudentAttendancesTable extends Migration
     public function down()
     {
         Schema::table('student_attendances', function (Blueprint $table) {
-            $table->dropIndex(['enrollment_id']);
             $table->dropForeign(['student_id']);
+            $table->dropIndex(['student_id']);
+
+            $table->dropForeign(['classroom_id']);
+            $table->dropIndex(['classroom_id']);
+
         });
     }
 }

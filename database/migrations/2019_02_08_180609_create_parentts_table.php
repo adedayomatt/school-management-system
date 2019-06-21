@@ -16,7 +16,7 @@ class CreateParenttsTable extends Migration
         Schema::create('parentts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
-            $table->integer('enrollment_id');
+            $table->integer('enrollment_id')->unsigned();
             $table->string('fullname');
             $table->string('relation')->nullable();
             $table->string('phone')->nullable();

@@ -15,8 +15,8 @@ class CreateClassroomFeeTable extends Migration
     {
         Schema::create('classroom_fee', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('classroom_id');
-            $table->integer('fee_id');
+            $table->integer('classroom_id')->unsigned();
+            $table->integer('fee_id')->unsigned();
             $table->timestamps();
         });
     }

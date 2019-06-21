@@ -15,7 +15,6 @@ class AddForeignKeyToPaymentsTable extends Migration
     {
         Schema::table('payments', function (Blueprint $table) {
             // Student FK
-            $table->unsignedInteger('student_id', 10)->change();
             $table->index('student_id');
             $table->foreign('student_id')
                     ->references('id')
@@ -23,7 +22,6 @@ class AddForeignKeyToPaymentsTable extends Migration
                     ->onDelete('cascade');
 
             // Fee FK
-            $table->unsignedInteger('fee_id', 10)->change();
             $table->index('fee_id');
             $table->foreign('fee_id')
                     ->references('id')
@@ -43,11 +41,11 @@ class AddForeignKeyToPaymentsTable extends Migration
     public function down()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->dropIndex(['student_id']);
             $table->dropForeign(['student_id']);
+            $table->dropIndex(['student_id']);
 
-            $table->dropIndex(['fee_id']);
             $table->dropForeign(['fee_id']);
+            $table->dropIndex(['fee_id']);
 
         });
     }

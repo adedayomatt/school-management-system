@@ -21,6 +21,13 @@
 .card-body{
     overflow-x: auto;
 }
+
+.operations-container{
+    opacity: .1
+}
+.operations-wrapper:hover .operations-container{
+    opacity: 1;
+}
 @media (min-width: 768px){
     .fixed-operations-pane{
         position: fixed;

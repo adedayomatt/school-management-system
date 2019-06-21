@@ -23,14 +23,14 @@
 							@if($fees->count() > 0)
 								@foreach($fees as $fee)
 									<tr>
-										<td>{{ $fee->name }}</td>
+										<td>
+											<a href="{{route('fee.show',[$fee->id])}}">{{ $fee->name }}</a>
+											<small class="text-muted d-block">For: {{$fee->target}}</small>
+										</td>
 										<td>{{$fee->description}}</td>
 										<td>{{number_format($fee->ammount)}}</td>
 										<td>
-											<p>
-												{{$fee->payments->count()}} payments record found
-												<a href="{{route('fee.show',[$fee->id])}}" class="btn btn-primary btn-sm"> view payments</a>
-											</p>
+											@include('fee.summary')
 										</td>
 									</tr>
 								@endforeach

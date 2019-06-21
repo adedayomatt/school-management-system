@@ -1,4 +1,4 @@
-<table class= "table table-striped table-bordered">
+<table class= "table table-striped table-bordered payments-table">
     <thead>
         <th>Student</th>
         <th>Fee</th>
@@ -11,9 +11,9 @@
 
     <tbody>
         @if($payments->count()> 0)
-            @foreach($payments->sortBy('created_at') as $payment)
+            @foreach($payments->sortByDesc('created_at') as $payment)
                 @if($payment->fee != null && $payment->student != null)
-                    <tr>
+                    <tr class="operations-wrapper">
                         <td><a href="{{route('student.show',[$payment->student->id])}}">{{ $payment->student->fullname() }}</a></td>
                         <td><a href="{{route('fee.show',[$payment->fee->id])}}">{{ $payment->fee->name }}</a></td>
                         <td>{{number_format($payment->fee->ammount)}}</td>
@@ -24,8 +24,28 @@
                             </div>                        
                         </td>
                         <td>{{ number_format($payment->student->aggregatePayment($payment->fee->id)) }}</td>
-                        <td>{{ number_format($payment->balance) }}</td>
-                        <td><a href="{{route('payment.receipt',[$payment->ref])}}" class="btn btn-success btn-sm"><i class="fa fa-receipt"></i> Receipt</a></td>
+                        <td>{{ number_format($payment->student->balanceOf($payment->fee->id)) }}</td>
+                        <td >
+                            <div class="operations-container">
+                                <a href="{{route('payment.receipt',[$payment->ref])}}" class="btn btn-success btn-sm m-1"><i class="fa fa-receipt"></i> Receipt</a>
+                                <a href="#" class="btn btn-sm btn-danger m-1" data-toggle="collapse" data-target="#payment-{{$payment->ref}}" ><i class="fa fa-ban"></i> cancel</a>
+                                <div class="collapse" data-parent=".payments-table" id="payment-{{$payment->ref}}">
+                                    <form action="{{route('payment.destroy',[$payment->id])}}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="alert alert-warning">
+                                            Are you sure you want to cancel the payment of <strong>{{number_format($payment->ammount)}}</strong> for <strong>{{$payment->student->fullname()}}</strong>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-primary"data-toggle="collapse" data-target="#payment-{{$payment->ref}}" >No</button>
+                                            <button type="submit" class="btn btn-sm btn-danger">Yes, cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            
+                        </td>
                     </tr>
                 @endif
             @endforeach

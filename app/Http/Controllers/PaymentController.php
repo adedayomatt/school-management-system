@@ -19,7 +19,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = Payment::orderby('created_at','desc')->paginate(5);
+        $payments = Payment::orderby('created_at','desc')->paginate(20);
         return view('payment.index')->with('payments',$payments);
     }
 
@@ -134,10 +134,10 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($charge,$id)
+    public function destroy($id)
     {
-        $payment = Payment::where('ref',$ref)->firstorfail();
+        $payment = Payment::findorfail($id);
         $payment->delete();
-        return redirect()->route('paymenta')->with('success',$payment->student->fullname().'\'s payment of '.$payment->ammount.' for '.$payment->fee->title.' deleted');
+        return redirect()->route('fee.show',[$payment->fee->id])->with('success',$payment->student->fullname().'\'s payment of '.$payment->ammount.' for '.$payment->fee->name.' deleted');
     }
 }

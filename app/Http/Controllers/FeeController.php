@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Fee;
+use App\Classroom;
 use Illuminate\Http\Request;
 
 class FeeController extends Controller
@@ -54,7 +55,7 @@ class FeeController extends Controller
             'name' => $request->fee_name,
             'description' => $request->fee_description,
             'ammount' => $request->ammount,
-            'general' => $request->target == 'general' ? 1 : 0,
+            'target' => $request->target,
         ]);
         
         if($request->target == 'classes'){
@@ -110,9 +111,53 @@ class FeeController extends Controller
         $fee->description = $request->fee_description;
         $fee->term_id = $request->term;
         $fee->ammount = $request->ammount;
-
+        $fee->target = $request->target;
         $fee->save();
         return redirect()->route('fee.show',[$fee->id])->with('success',$fee->name.($fee->classroom_id === null ? '': 'for '.$fee->classroom->name).' updated');
+    }
+
+    public function attachClasses(Request $request, $id){
+        $fee = Fee::findorfail($id);
+        if(!$fee->isForClasses()){
+            return redirect()->back()->with('error', $fee->name.' is not meant for classes');
+        }
+        if($request->classrooms != null && count($request->classrooms) > 0){
+            $fee->classrooms()->attach($request->classrooms);
+            return redirect()->back()->with('success', count($request->classrooms).' classes attached to '.$fee->name);
+        }
+        return redirect()->back()->with('error', 'No class selected');
+    }
+
+    public function attachStudents(Request $request, $id){
+        $fee = Fee::findorfail($id);
+        if(!$fee->isForStudents()){
+            return redirect()->back()->with('error', $fee->name.' is not meant for d students');
+        }
+        if($request->students != null && count($request->students) > 0){
+                $fee->students()->attach($request->students);
+                return redirect()->back()->with('success', count($request->students).' students attached to '.$fee->name);
+        }
+        return redirect()->back()->with('error', 'No student selected');
+    }
+
+    public function cancelStudentFee(Request $request,$student_id, $fee_id){
+        $student = Student::findorfail($student_id);
+        $fee = Fee::findorfail($fee_id);
+        $students = $fee->studentsArray();
+        unset($students[array_search($student->id,$students)]);//remove the student id from the eleigible student to pay the fee
+        $fee->students()->sync($students);//sync the fee with the new students array
+       return redirect()->route('student.show',[$student->id])->with('success','Fee: '.$fee->name.' has been cancelled for '.$student->fullname());
+    }
+
+    
+    public function cancelClassFee(Request $request,$class_id, $fee_id){
+
+        $class = Classroom::findorfail($class_id);
+        $fee = Fee::findorfail($fee_id);
+        $classes = $fee->classroomsArray();
+        unset($classes[array_search($class->id,$classes)]);//remove the classroom id from the eleigible classes to pay the fee
+        $fee->classrooms()->sync($classes);//sync the fee with the new classes array
+       return redirect()->route('class.show',[$class->id])->with('success','Fee: '.$fee->name.' has been cancelled for '.$class->name);
     }
 
     /**

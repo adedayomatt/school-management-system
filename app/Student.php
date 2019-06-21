@@ -66,7 +66,7 @@ class Student extends Model
 
     public function allFees(){
         $fees = collect([]);
-        $generalFees = Fee::where('general',1)->get();
+        $generalFees = Fee::where('target','general')->get();
         $classroomFees = $this->classroom->fees;
         $individualFees = $this->fees;
         return $fees->merge($generalFees)

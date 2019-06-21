@@ -11,7 +11,7 @@ class Fee extends Model
 
     protected $dates = ['deleted_at'];
     
-    protected $fillable = ['term_id','name','description','ammount','general'];
+    protected $fillable = ['term_id','name','description','ammount','target'];
 
     public function term(){
         return $this->belongsTo('App\Term');
@@ -28,6 +28,13 @@ class Fee extends Model
         return $this->belongsToMany('App\Student');
     }
 
+    public function totalPaid(){
+        $paid = 0;
+        foreach($this->payments as $payment){
+            $paid += $payment->ammount;
+        }
+        return $paid;
+    }
     public function classroomsArray(){
         $classes = array();
         foreach($this->classrooms as $c)
@@ -39,30 +46,30 @@ class Fee extends Model
 
     public function studentsArray(){
         $students = array();
-        foreach($this->students as $c)
+        foreach($this->students as $s)
         {
-            array_push($students, $c->id);
+            array_push($students, $s->id);
         }
         return $students;
     }
 
 
     public function isForClasses(){
-        return $this->classrooms->count() > 0 ? true : false;
+        return $this->target == 'classes' ? true : false;
     }
 
     public function isForStudents(){
-        return $this->students->count() > 0 ? true : false;
+        return $this->target == 'students' ? true : false;
     }
 
     public function isForGeneral(){
-        return $this->general == 1 ? true : false;
+        return $this->target == 'general' ? true : false;
     }
 
 // check if a student is eligible to pay the fee
     public function payableByStudent($student_id){
         $student = Student::findorfail($student_id);
-        if(in_array($student->id, $this->studentsArray())){
+        if($this->isForGeneral() ||  in_array($student->id, $this->studentsArray()) || in_array($student->classroom->id, $this->classroomsArray())){
             return true;
         }
         return false;
@@ -71,7 +78,7 @@ class Fee extends Model
     // check if a class is eligible to pay the fee
     public function payableByClass($class_id){
         $class = Classroom::findorfail($class_id);
-        if(in_array($class->id, $this->classroomsArray())){
+        if($this->isForGeneral() || in_array($class->id, $this->classroomsArray())){
             return true;
         }
         return false;
@@ -97,5 +104,17 @@ class Fee extends Model
         elseif($this->isForGeneral()){
             return "All students";
         }
+        else{
+            return '<small class="text-muted">target not specified</small>';
+        }
+    }
+    public function debtors(){
+        $debtors = array();
+       foreach(Student::all() as $student){
+           if($this->payableByStudent($student->id) && $student->balanceOf($this->id) > 0){
+                array_push($debtors, ['student' => $student, 'balance' => $student->balanceOf($this->id)]);
+           }
+       }
+       return collect($debtors);
     }
 }

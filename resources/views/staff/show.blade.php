@@ -54,6 +54,19 @@
                 </form>
         @endif
        </div>
+
+       <div class="m-2">
+            <form action="{{ route('staff.destroy', [$staff->id]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <a href="#" class="btn btn-danger btn-sm" data-toggle="collapse" data-target="#confirm-delete"><i class="fa fa-trash"></i> Delete</a>
+                <div class="collapse" id="confirm-delete">
+                    <p>Are you sure?</p>
+                    <a href="#" data-toggle="collapse" data-target="#confirm-delete" class="btn btn-sm btn-primary">No</a>
+                    <button type="submit" class="btn btn-sm btn-danger">Yes, delete</button>
+                </div>
+            </form>
+       </div>
 </div>
 @endif
 

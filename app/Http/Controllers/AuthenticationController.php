@@ -73,10 +73,10 @@ class AuthenticationController extends Controller
     
     $staff = Staff::findorfail($id);
     if($staff->isAsstTeacher()){
-      return redirect()->back()->with('warning','Authorization for assistant teachers is enabled');
+      return redirect()->back()->with('warning','Authorization for assistant teachers is not enabled');
     }
     if(User::where('email',$staff->email)->get()->count() > 0){
-        return redirect()->back()->with('error', 'Could not authorize '.$staff->fullname().'. Email '.$staff->email.' is already authorized for a user');
+        return redirect()->back()->with('error', 'Could not authorize '.$staff->fullname().'. Email '.$staff->email.' is already authorized for another user');
     }
     
     if(!$this->isAuthorizable($staff->email)){
@@ -102,10 +102,11 @@ class AuthenticationController extends Controller
   public function reAuthorizeStaff($id){
     $staff = Staff::findorfail($id);
     $user = User::findorfail($staff->user_id);
-    $user->password = $this->generatePassword();
+    $new_password = $this->generatePassword();
+    $user->password = bcrypt($new_password);
     $user->save();
 
-    event(new StaffAuthorization($staff,$password));
+    event(new StaffAuthorization($staff,$new_password));
 
     return redirect()->route('staff.show',[$staff->id])->with('success',$staff->fullname().' reauthorized!');
 

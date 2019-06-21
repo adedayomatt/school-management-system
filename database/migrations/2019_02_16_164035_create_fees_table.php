@@ -15,11 +15,11 @@ class CreateFeesTable extends Migration
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('term_id');
+            $table->integer('term_id')->unsigned();
+            $table->string('target')->default('general');
             $table->string('name');
             $table->string('description')->nullable();
             $table->bigInteger('ammount');
-            $table->integer('general')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

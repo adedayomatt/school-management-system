@@ -15,8 +15,8 @@ class CreateClassroomSubjectTable extends Migration
     {
         Schema::create('classroom_subject', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('classroom_id');
-            $table->integer('subject_id');
+            $table->integer('classroom_id')->unsigned();
+            $table->integer('subject_id')->unsigned();
             $table->timestamps();
         });
     }

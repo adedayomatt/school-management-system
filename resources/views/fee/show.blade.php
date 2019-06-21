@@ -8,19 +8,14 @@
 			<a href="{{route('fee.edit',[$fee->id])}}" class="btn btn-primary btn-sm m-2"><i class="fa fa-pen"></i> Edit fee</a>
 			<a href="{{route('fee.pay',[$fee->id])}}" class="btn btn-primary  btn-sm m-2"><i class="fa fa-hand-holding-usd"></i> New payment</a>
 		</div>
-		<?php $payments = $fee->payments ?>
 		<div class="row">
 			<div class="col-md-9">
-				@include('fee.widget')
+				@include('fee.summary')
+				@include('fee.widget', ['payments' => $fee->payments])
 			</div>
 			<div class="col-md-3">
 				@include('fee.payable')
-				<form action="{{route('fee.destroy',[$fee->id])}}" method="POST">
-				@csrf
-				@method('DELETE')
-				<button class="btn btn-danger btn-sm m-2"><i class="fa fa-ban"></i> cancel fee and all related payments</button>
-			</form>
-
+				@include('fee.debtors')
 			</div>
 		</div>
 

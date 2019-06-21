@@ -10,7 +10,7 @@
 			<div class="card">
 				<div class="card-header">
 					<h4>Edit fee: {{$fee->name}}</h4>
-					<p>For: {!!$fee->target()!!}</p>
+					<p>For: {{$fee->target}}</p>
 				</div>
 				<div class="card-body">
 						<form action ="{{ route('fee.update',[$fee->id]) }}" method="POST">
@@ -40,6 +40,14 @@
 							<input type="number" name="ammount" id="ammount" class="form-control" value="{{$fee->ammount}}" required>
 						</div>	
 
+						<div class="form-group">
+							<label for="">Fee target : <strong>{{$fee->target}}</strong></label>
+							<select class="form-control" id="fee-target" name="target">
+								<option value="general" {{$fee->target == 'general' ? 'selected' : ''}}>All students</option>
+								<option value="classes" {{$fee->target == 'classes' ? 'selected' : ''}}>Classes</option>
+								<option value="students" {{$fee->target == 'students' ? 'selected' : ''}}>Students</option>
+							</select>
+						</div>
 
 						<div class="form-group">
 							<div class="text-center">

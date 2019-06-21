@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" style="overflow: unset !important">
                     @include('staff.widgets.search')
                 </div>
             </div>

@@ -214,8 +214,10 @@ public function changeRole(Request $request, $id){
 	public function destroy($id)
     {
         $staff = Staff::findOrFail($id);
+        if($staff->guarantor != null){
+            $staff->guarantor->delete();
+        }
 		$staff->delete();
-
 		return redirect()->route('staff.index')->with('success',$staff->fullname().' deleted');
     }
 

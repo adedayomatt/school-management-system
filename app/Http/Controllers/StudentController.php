@@ -58,17 +58,6 @@ class StudentController extends Controller
         return redirect()->route('student.show',[$student->id])->with('success','Fee: '.$fee->name.'('.$fee->ammount.') added for '.$student->fullname());
     }
 
-    public function cancelFee(Request $request,$student_id){
-        $this->validate($request, [
-            'fee' => ['required']
-        ]);
-        $student = Student::findorfail($student_id);
-        $fee = Fee::findorfail($request->fee);
-        $students = $fee->studentsArray();
-        unset($students[array_search($student->id,$students)]);//remove the student id from the eleigible student to pay the fee
-        $fee->students()->sync($students);//sync the fee with the new students array
-       return redirect()->route('student.show',[$student->id])->with('success','Fee: '.$fee->name.' has been cancelled for '.$student->fullname());
-    }
 
     public function payFee($student_id,$fee_id){
         $student = Student::findorfail($student_id);
